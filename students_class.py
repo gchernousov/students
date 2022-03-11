@@ -1,4 +1,16 @@
-# Описание классов:
+# Функции
+
+def average_grade(grades_dict):
+    value_grades = 0
+    sum_grades = 0
+    for grade_list in grades_dict.values():
+        for grade in grade_list:
+            sum_grades += grade
+            value_grades += 1
+    average_grades = sum_grades / value_grades
+    return average_grades
+
+# Описание классов
 
 class Student:
     def __init__(self, name, surname, gender):
@@ -19,24 +31,13 @@ class Student:
             return 'Ошибка'
 
     def __str__(self):
-        value_grades = 0
-        sum_grades = 0
-        for grade_list in self.grades.values():
-            for grade in grade_list:
-                sum_grades += grade
-                value_grades += 1
-        average_grades = sum_grades / value_grades
-
         name_surname = f'''Имя: {self.name}
 Фамилия: {self.surname}
-Средняя оценка за домашние задания: {round(average_grades, 2)}
+Средняя оценка за домашние задания: {round(average_grade(self.grades), 2)}
 Курсы в процессе изучения: {", ".join(self.courses_in_progress)}
 Завершенные курсы: {", ".join(self.finished_courses)}\n'''
 
         return name_surname
-
-    def best_student(self):
-        pass
 
 
 class Mentor:
@@ -52,15 +53,7 @@ class Lecturer(Mentor):
         self.grades = {}
 
     def __str__(self):
-        value_grades = 0
-        sum_grades = 0
-        for grade_list in self.grades.values():
-            for grade in grade_list:
-                sum_grades += grade
-                value_grades += 1
-
-        average_grades = sum_grades / value_grades
-        name_surname = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(average_grades, 2)}\n'
+        name_surname = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(average_grade(self.grades), 2)}\n'
         return name_surname
 
 
@@ -80,7 +73,7 @@ class Reviewer(Mentor):
         return name_surname
 
 
-# Создание экземпляров:
+# Создание экземпляров
 
 student_1 = Student('George', 'Chernousov', 'male')
 student_1.courses_in_progress += ['Python']
@@ -109,7 +102,8 @@ lecturer_1.courses_attached += ['Python']
 lecturer_2 = Lecturer('Linus', 'Torvalds')
 lecturer_2.courses_attached += ['Git']
 
-# Выставляем оценки:
+
+# Выставляем оценки
 
 reviewer_1.rate_student(student_1, 'Python', 8)
 reviewer_1.rate_student(student_1, 'Python', 10)
