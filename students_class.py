@@ -31,13 +31,33 @@ class Student:
             return 'Ошибка'
 
     def __str__(self):
-        name_surname = f'''Имя: {self.name}
+        student_info = f'''Имя: {self.name}
 Фамилия: {self.surname}
-Средняя оценка за домашние задания: {round(average_grade(self.grades), 2)}
+Средняя оценка за домашние задания: {round(average_grade(self.grades), 1)}
 Курсы в процессе изучения: {", ".join(self.courses_in_progress)}
 Завершенные курсы: {", ".join(self.finished_courses)}\n'''
+        return student_info
 
-        return name_surname
+    def __ne__(self, other):
+        if average_grade(self.grades) != average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
+
+    def __gt__(self, other):
+        if average_grade(self.grades) > average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
+
+    def __ge__(self, other):
+        if average_grade(self.grades) >= average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
 
 
 class Mentor:
@@ -53,8 +73,29 @@ class Lecturer(Mentor):
         self.grades = {}
 
     def __str__(self):
-        name_surname = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(average_grade(self.grades), 2)}\n'
-        return name_surname
+        lecturer_info = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(average_grade(self.grades), 1)}\n'
+        return lecturer_info
+
+    def __ne__(self, other):
+        if average_grade(self.grades) != average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
+
+    def __gt__(self, other):
+        if average_grade(self.grades) > average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
+
+    def __ge__(self, other):
+        if average_grade(self.grades) >= average_grade(other.grades):
+            result = 'True'
+        else:
+            result = 'False'
+        return result
 
 
 class Reviewer(Mentor):
@@ -69,8 +110,8 @@ class Reviewer(Mentor):
             return 'Ошибка'
 
     def __str__(self):
-        name_surname = f'Имя: {self.name}\nФамилия: {self.surname}\n'
-        return name_surname
+        reviewer_info = f'Имя: {self.name}\nФамилия: {self.surname}\n'
+        return reviewer_info
 
 
 # Создание экземпляров
@@ -158,3 +199,32 @@ print('Информация по экспертам:\n')
 print(reviewer_1)
 print(reviewer_2)
 print()
+
+
+# Сравним средние оценки студентов и лекторов
+
+print('Сравнения средних оценок студентов:\n')
+
+print(student_1 == student_2)
+print(student_1 != student_3)
+print(student_2 == student_3)
+print()
+print(student_1 > student_2)
+print(student_3 < student_2)
+print(student_3 > student_1)
+print(student_2 < student_3)
+print()
+print(student_2 >= student_3)
+print(student_3 <= student_1)
+print(student_1 >= student_3)
+print(student_3 <= student_2)
+print()
+
+print('Сравнения средних оценок лекторов:\n')
+
+print(lecturer_1 == lecturer_2)
+print(lecturer_1 != lecturer_2)
+print(lecturer_1 > lecturer_2)
+print(lecturer_1 < lecturer_2)
+print(lecturer_1 >= lecturer_2)
+print(lecturer_1 <= lecturer_2)
