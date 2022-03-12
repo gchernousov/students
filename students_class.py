@@ -1,6 +1,8 @@
 # Функции
 
 def average_grade(grades_dict):
+    """Функция для подсчета средней оценки студентов/лекторов по ВСЕМ курсам
+    """
     value_grades = 0
     sum_grades = 0
     for grade_list in grades_dict.values():
@@ -10,9 +12,47 @@ def average_grade(grades_dict):
     average_grades = sum_grades / value_grades
     return average_grades
 
+def average_students_grade(student_list, course):
+    """Функция для подсчета и вывода средней оценки студента по заданному курсу
+    """
+    for data in student_list:
+        if course in data.grades.keys():
+            print(f'Средняя оценка за курс {course}:\n')
+            sum_g = 0
+            for student in student_list:
+                num_g = len(student.grades[course])
+                for grades in student.grades[course]:
+                    sum_g += grades
+                avr = sum_g / num_g
+                sum_g = 0
+                print(f'{student.name} {student.surname}: {round(avr, 1)}')
+            print()
+            break
+        else:
+            print(f'По курсу {course} ничего не найдено\n')
+            break
+
+def average_lecturers_grade(lecturers_list, course):
+    """Функция для подсчета и вывода средней оценки лектора по заданному курсу
+    """
+    for lecturer in lecturers_list:
+        if course in lecturer.grades.keys():
+            num_x = len((lecturer.grades[course]))
+            sum_x = 0
+            print(f'Средняя оценка лекторов, преподающих {course}:')
+            for grade in lecturer.grades[course]:
+                sum_x += grade
+            avr = sum_x / num_x
+            print(f'{lecturer.name} {lecturer.surname}: {round(avr, 1)}\n')
+            break
+
+
 # Описание классов
 
 class Student:
+
+    student_list =[]
+
     def __init__(self, name, surname, gender):
         self.name = name
         self.surname = surname
@@ -20,6 +60,7 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
+        Student.student_list.append(self)
 
     def rate_lecturer(self, lecturer, course, grade):
         if isinstance(lecturer, Lecturer) and course in self.courses_in_progress and course in lecturer.courses_attached:
@@ -68,12 +109,17 @@ class Mentor:
 
 
 class Lecturer(Mentor):
+
+    lecturer_list = []
+
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
+        Lecturer.lecturer_list.append(self)
 
     def __str__(self):
-        lecturer_info = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {round(average_grade(self.grades), 1)}\n'
+        lecturer_info = f'Имя: {self.name}\nФамилия: {self.surname}\n' \
+                        f'Средняя оценка за лекции: {round(average_grade(self.grades), 1)}\n'
         return lecturer_info
 
     def __ne__(self, other):
@@ -153,8 +199,8 @@ reviewer_1.rate_student(student_2, 'Python', 10)
 reviewer_1.rate_student(student_2, 'Python', 6)
 reviewer_1.rate_student(student_2, 'Python', 7)
 reviewer_1.rate_student(student_3, 'Python', 9)
-reviewer_1.rate_student(student_3, 'Python', 9)
-reviewer_1.rate_student(student_3, 'Python', 5)
+reviewer_1.rate_student(student_3, 'Python', 10)
+reviewer_1.rate_student(student_3, 'Python', 6)
 
 reviewer_2.rate_student(student_1, 'Git', 8)
 reviewer_2.rate_student(student_1, 'Git', 9)
@@ -181,6 +227,8 @@ student_3.rate_lecturer(lecturer_2, 'Git', 10)
 print(f'Оценки лектора {lecturer_1.name} {lecturer_1.surname}: {lecturer_1.grades}')
 print(f'Оценки лектора {lecturer_2.name} {lecturer_2.surname}: {lecturer_2.grades}')
 print()
+print('-----------------------------')
+print()
 
 # Выводим информацию о студентах, лекторах и экспертах:
 
@@ -199,32 +247,55 @@ print('Информация по экспертам:\n')
 print(reviewer_1)
 print(reviewer_2)
 print()
+print('-----------------------------')
+print()
 
 
 # Сравним средние оценки студентов и лекторов
 
 print('Сравнения средних оценок студентов:\n')
 
-print(student_1 == student_2)
-print(student_1 != student_3)
-print(student_2 == student_3)
+print('student_1 == student_2:', student_1 == student_2)
+print('student_1 != student_3:', student_1 != student_3)
+print('student_2 == student_3:', student_2 == student_3)
 print()
-print(student_1 > student_2)
-print(student_3 < student_2)
-print(student_3 > student_1)
-print(student_2 < student_3)
+print('student_1 > student_2:', student_1 > student_2)
+print('student_3 < student_2:', student_3 < student_2)
+print('student_3 > student_1:', student_3 > student_1)
+print('student_2 < student_3:', student_2 < student_3)
 print()
-print(student_2 >= student_3)
-print(student_3 <= student_1)
-print(student_1 >= student_3)
-print(student_3 <= student_2)
+print('student_2 >= student_3:', student_2 >= student_3)
+print('student_3 <= student_1:', student_3 <= student_1)
+print('student_1 >= student_3:', student_1 >= student_3)
+print('student_3 <= student_2:', student_3 <= student_2)
 print()
 
 print('Сравнения средних оценок лекторов:\n')
 
-print(lecturer_1 == lecturer_2)
-print(lecturer_1 != lecturer_2)
-print(lecturer_1 > lecturer_2)
-print(lecturer_1 < lecturer_2)
-print(lecturer_1 >= lecturer_2)
-print(lecturer_1 <= lecturer_2)
+print('lecturer_1 == lecturer_2:', lecturer_1 == lecturer_2)
+print('lecturer_1 != lecturer_2:', lecturer_1 != lecturer_2)
+print('lecturer_1 > lecturer_2:', lecturer_1 > lecturer_2)
+print('lecturer_1 < lecturer_2:', lecturer_1 < lecturer_2)
+print('lecturer_1 >= lecturer_2:', lecturer_1 >= lecturer_2)
+print('lecturer_2 <= lecturer_1:', lecturer_2 <= lecturer_1)
+print()
+print('-----------------------------')
+print()
+
+# Выведем средние оценки у студентов и лекторов по курсам:
+
+student_list = Student.student_list
+lecturer_list = Lecturer.lecturer_list
+
+print('Средние оценки студентов:\n')
+
+average_students_grade(student_list, 'Python')
+average_students_grade(student_list, 'Java')
+average_students_grade(student_list, 'Git')
+
+print('Средние оценки лекторов:\n')
+
+average_lecturers_grade(lecturer_list, 'C++')
+average_lecturers_grade(lecturer_list, 'Python')
+average_lecturers_grade(lecturer_list, 'JAVA')
+average_lecturers_grade(lecturer_list, 'Git')
